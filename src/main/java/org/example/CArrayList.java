@@ -37,6 +37,9 @@ public class CArrayList<T> {
     }
 
     public T get(int index){
+        if(index<0 || index >=this.size){
+            throw new ArrayIndexOutOfBoundsException("CArrayList index is out of range: " + index);
+        }
         return this.arr[index];
     }
 
@@ -50,7 +53,7 @@ public class CArrayList<T> {
                 newArray[i] = this.arr[i];
             }
             this.arr = newArray;
-            this.size+=2;
+            this.size+=1;
         }
         this.arr[this.index] = value;
         this.index++;
@@ -60,6 +63,10 @@ public class CArrayList<T> {
         if(index < 0 || index >=this.size){
             throw new ArrayIndexOutOfBoundsException("CArrayList index is out of range: " + index);
         }
-        
+
+    }
+
+    public int arraySize(){
+        return this.size;
     }
 }
