@@ -17,7 +17,30 @@ public class Main {
         arrayNSizeFilled.put(1234, 2);
         System.out.println(arrayNSizeFilled.get(2));
         arrayNSizeFilled.push(1111111);
-        System.out.println(arrayNSizeFilled.get(arrayNSizeFilled.arraySize()-1));
+        System.out.println(arrayNSizeFilled.get(arrayNSizeFilled.arraySize()-2));
+
+        System.out.println();
+        CArrayList<String> list = new CArrayList<>(String.class);
+        list.push("Hello");
+        list.push("World");
+        list.push("Java");
+
+        System.out.println("Before deletion:");
+        for (int i = 0; i < list.arraySize(); i++) {
+            System.out.println(list.get(i));
+        }
+        
+        System.out.println();
+        list.delete(1);
+
+        System.out.println("After deletion:");
+        for (int i = 0; i < list.arraySize(); i++) {
+            System.out.println(list.get(i));
+        }
+
+
+
+
 
 
 

@@ -8,65 +8,72 @@ public class CArrayList<T> {
     private int index = 0;
 
     @SuppressWarnings("unchecked")
-   public CArrayList(Class<T> type){
+    public CArrayList(Class<T> type) {
         this.size = 1;
         this.arr = (T[]) Array.newInstance(type, this.size);
     }
 
     @SuppressWarnings("unchecked")
-    public CArrayList(Class<T> type, int size){
+    public CArrayList(Class<T> type, int size) {
         this.size = size;
         this.arr = (T[]) Array.newInstance(type, this.size);
     }
 
     @SuppressWarnings("unchecked")
-    public CArrayList(Class<T> type, int size, T value){
+    public CArrayList(Class<T> type, int size, T value) {
         this.size = size;
         this.index = size;
         this.arr = (T[]) Array.newInstance(type, this.size);
-        for(int i = 0; i < size; ++i){
+        for (int i = 0; i < size; ++i) {
             this.arr[i] = value;
         }
     }
 
-    public void put(T value, int index){
-        if(index<0 || index >=this.size){
+    public void put(T value, int index) {
+        if (index < 0 || index >= this.index) {
             throw new ArrayIndexOutOfBoundsException("CArrayList index is out of range: " + index);
         }
         this.arr[index] = value;
     }
 
-    public T get(int index){
-        if(index<0 || index >=this.size){
+    public T get(int index) {
+        if (index < 0 || index >= this.index) {
             throw new ArrayIndexOutOfBoundsException("CArrayList index is out of range: " + index);
         }
         return this.arr[index];
     }
 
-    public void push(T value){
-        if(this.index >= this.size){
-
+    public void push(T value) {
+        if (this.index >= this.size) {
             @SuppressWarnings("unchecked")
-            T[] newArray = (T[]) Array.newInstance(arr.getClass().getComponentType(), 2*this.size);
+            T[] newArray = (T[]) Array.newInstance(arr.getClass().getComponentType(), 2 * this.size);
 
-            for(int i = 0; i < this.size; ++i){
+            for (int i = 0; i < this.size; ++i) {
                 newArray[i] = this.arr[i];
             }
             this.arr = newArray;
-            this.size+=1;
+            this.size *= 2;
         }
         this.arr[this.index] = value;
         this.index++;
     }
 
-    public void delete(int index){
-        if(index < 0 || index >=this.size){
+    public void delete(int index) {
+        if (index < 0 || index >= this.index) {
             throw new ArrayIndexOutOfBoundsException("CArrayList index is out of range: " + index);
         }
 
+        for (int i = index; i < this.index - 1; i++) {
+            this.arr[i] = this.arr[i + 1];
+        }
+
+        this.index--;
+        this.arr[this.index] = null;
     }
 
-    public int arraySize(){
-        return this.size;
+    public int arraySize() {
+        return this.index;
     }
+
+
 }
