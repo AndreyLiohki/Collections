@@ -1,8 +1,6 @@
 package org.example;
 
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 public class CHashSet<T> implements Iterable<T> {
     private static final int INITIAL_CAPACITY = 16;
@@ -15,23 +13,6 @@ public class CHashSet<T> implements Iterable<T> {
     public CHashSet() {
         table = new Object[INITIAL_CAPACITY];
         threshold = (int) (INITIAL_CAPACITY * LOAD_FACTOR);
-    }
-
-    private int getIndex(T element) {
-        return Math.abs(element.hashCode()) % table.length;
-    }
-
-    private void resize() {
-        Object[] oldTable = table;
-        table = new Object[oldTable.length * 2];
-        threshold = (int) (table.length * LOAD_FACTOR);
-        size = 0;
-
-        for (Object obj : oldTable) {
-            if (obj != null) {
-                add((T) obj);
-            }
-        }
     }
 
     public boolean add(T element) {
@@ -89,32 +70,24 @@ public class CHashSet<T> implements Iterable<T> {
     }
 
     @Override
-    public Iterator<T> iterator() {
-        return new CHashSetIterator();
+    public CHashSetIterator<T> iterator() {
+        return new CHashSetIterator<>(table, size);
     }
 
-    private class CHashSetIterator implements Iterator<T> {
-        private int currentIndex = 0;
-        private int elementsReturned = 0;
+    private int getIndex(T element) {
+        return Math.abs(element.hashCode()) % table.length;
+    }
 
-        @Override
-        public boolean hasNext() {
-            while (currentIndex < table.length && (table[currentIndex] == null || elementsReturned >= size)) {
-                currentIndex++;
-            }
-            return currentIndex < table.length;
-        }
+    private void resize() {
+        Object[] oldTable = table;
+        table = new Object[oldTable.length * 2];
+        threshold = (int) (table.length * LOAD_FACTOR);
+        size = 0;
 
-        @SuppressWarnings("unchecked")
-        @Override
-        public T next() {
-            if (!hasNext()) {
-                throw new NoSuchElementException("No more elements in the set.");
+        for (Object obj : oldTable) {
+            if (obj != null) {
+                add((T) obj);
             }
-            T element = (T) table[currentIndex];
-            currentIndex++;
-            elementsReturned++;
-            return element;
         }
     }
 }
